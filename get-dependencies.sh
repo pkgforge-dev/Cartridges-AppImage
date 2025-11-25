@@ -15,7 +15,7 @@ git clone https://gitlab.archlinux.org/archlinux/packaging/packages/cartridges.g
 	sed -i -e "s|pkgver=*|pkgver=$VER|" ./PKGBUILD
     sed -i -e "s|pkgrel=*|pkgrel=1|" ./PKGBUILD
 	sed -i '/^b2sums/,/^)/d' ./PKGBUILD
-	echo -e "\nb2sums=('SKIP')" >> ./PKGBUILD
+	echo -e "\nb2sums=(\n  'SKIP'\n'  SKIP\n)" >> ./PKGBUILD
     makepkg -fs --noconfirm
 	ls -la .
 	pacman --noconfirm -U *.pkg.tar.*
