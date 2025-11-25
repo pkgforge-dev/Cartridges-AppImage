@@ -27,5 +27,10 @@ quick-sharun /usr/bin/cartridges \
 sed -i 's|"/usr/share/cartridges"|os.getenv("SHARUN_DIR", "/usr") + "/share/cartridges"|' ./AppDir/bin/cartridges
 sed -i 's|"/usr/share/locale"|os.getenv("SHARUN_DIR", "/usr") + "/share/locale"|' ./AppDir/bin/cartridges
 
+# Copy needed files for search-integration into gnome-shell
+mkdir -p ./AppDir/share/dbus-1/services/ ./AppDir/share/gnome-shell/services/search-providers/
+cp -v /usr/share/dbus-1/services/page.kramo.Cartridges.SearchProvider.service ./AppDir/share/dbus-1/services/page.kramo.Cartridges.SearchProvider.service
+cp -v /usr/share/gnome-shell/services/search-providers/page.kramo.Cartridges.SearchProvider.ini ./AppDir/share/gnome-shell/services/search-providers/page.kramo.Cartridges.SearchProvider.ini
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
