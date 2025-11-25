@@ -8,6 +8,6 @@
 # Check if 'cartridges-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
 if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "cartridges-search-provider" ]; then
 	BIN="$1"
-  shift
+    shift
 	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 fi
