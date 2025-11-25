@@ -1,0 +1,81 @@
+#!/bin/sh
+
+set -e
+
+# This hook is used to integrate app's search provider into Gnome Shell
+
+# Input the values here
+DBUS_SERVICE_NAME=page.kramo.Cartridges.SearchProvider.service
+SEARCH_PROVIDER_NAME=page.kramo.Cartridges.SearchProvider.ini
+BIN_NAME=cartridges
+
+DBUS_SHARE_SYS="/usr/share/dbus-1/services/$DBUS_SERVICE_NAME"
+SEARCH_SHARE_SYS="/usr/share/gnome-shell/search-providers/$SEARCH_PROVIDER_NAME"
+DBUS_SHARE_SYS_LOCAL="/usr/local/share/dbus-1/services/$DBUS_SERVICE_NAME"
+SEARCH_SHARE_SYS_LOCAL="/usr/local/share/gnome-shell/search-providers/$SEARCH_PROVIDER_NAME"
+LOCAL_SHARE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+DBUS_SHARE_LOCAL="${LOCAL_SHARE_DIR}/dbus-1/services/${DBUS_SERVICE_NAME}"
+SEARCH_SHARE_LOCAL="${LOCAL_SHARE_DIR}/gnome-shell/search-providers/${SEARCH_PROVIDER_NAME}"
+ANYLINUX_APPIMAGES_CONFIG="${LOCAL_SHARE_DIR}/anylinux-appimages"
+ASK_STATE_MESSAGE_FILE="${ANYLINUX_APPIMAGES_CONFIG}/${BIN_NAME}-xdgdatadirs-message"
+XDGDATADIRS_MESSAGE="In order for \"${BIN_NAME}\" AppImage to have search-integration working with \"gnome-shell\", please add the XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
+
+case \"\$XDG_DATA_DIRS\" in
+  *\"\${XDG_DATA_HOME:-\$HOME/.local/share}:\");;
+  *) export XDG_DATA_DIRS=\"\${XDG_DATA_HOME:-\$HOME/.local/share}:\${XDG_DATA_DIRS}\";;
+esac
+
+Then restart the system for changes to apply.
+
+To not get asked again about this change, click \"No\"."
+
+# Integrate search-provider into Gnome Shell
+if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null && \
+[ ! -f "$DBUS_SHARE_SYS" ] && [ ! -f "$SEARCH_SHARE_SYS" ] && \
+[ ! -f "$DBUS_SHARE_SYS_LOCAL" ] && [ ! -f "$SEARCH_SHARE_SYS_LOCAL" ]; then
+
+  _display_message() {
+	  if command -v kdialog 1>/dev/null; then
+	    kdialog --yesno "$XDGDATADIRS_MESSAGE" 2>/dev/null || return 1
+	  elif command -v zenity 1>/dev/null; then
+	    zenity --question --text "$XDGDATADIRS_MESSAGE" 2>/dev/null || return 1
+	  elif command -v yad 1>/dev/null; then
+	    yad --text="$XDGDATADIRS_MESSAGE" 2>/dev/null || return 1
+	  fi
+  }
+
+  case "$XDG_DATA_DIRS" in
+      *"${LOCAL_SHARE_DIR}:"*) xdg_data_dirs_satisfied=true;;
+  esac
+
+  if ! ${xdg_data_dirs_satisfied:-false}; then
+    echo "$XDGDATADIRS_MESSAGE"
+    if [ -f "$ASK_STATE_MESSAGE_FILE" ]; then
+      read -r STATE < "$ASK_STATE_MESSAGE_FILE"
+      if $STATE; then
+        _display_message
+      fi
+    else
+      if ! _display_message; then
+        mkdir -p "$ANYLINUX_APPIMAGES_CONFIG"
+        echo "false" > "$ASK_STATE_MESSAGE_FILE"
+      fi
+    fi
+  fi
+
+  mkdir -p "${LOCAL_SHARE_DIR}"/dbus-1/services/
+  mkdir -p "${LOCAL_SHARE_DIR}"/gnome-shell/search-providers/
+  echo '[D-BUS Service]' > "$DBUS_SHARE_LOCAL"
+  echo "Name=${DBUS_SERVICE_NAME%.service}" >> "$DBUS_SHARE_LOCAL"
+  echo "Exec=${CURRENTDIR}/lib/cartridges-search-provider" >> "$DBUS_SHARE_LOCAL"
+  if [ ! -f "$SEARCH_SHARE_LOCAL" ]; then
+    cp "${CURRENTDIR}/share/gnome-shell/search-providers/${SEARCH_PROVIDER_NAME}" "$SEARCH_SHARE_LOCAL"
+  fi
+  ## Fix filename for AM/appman desktop file in search provider config
+  if command -v sed 1>/dev/null; then
+    if [ -f "/usr/local/share/applications/${BIN_NAME}-AM.desktop" ] || [ -f "${LOCAL_SHARE_DIR}/applications/${BIN_NAME}-AM.desktop" ]; then
+      __tmp_sed=$(sed "s/^DesktopId=.*/DesktopId=$BIN_NAME-AM.desktop/" "$SEARCH_SHARE_LOCAL")
+      echo "$__tmp_sed" > "$SEARCH_SHARE_LOCAL"
+    fi
+  fi
+fi
