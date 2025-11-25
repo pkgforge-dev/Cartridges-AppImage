@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# This hook is used together with search-integration hook because this app doesn't supply dbus service through '--gapplication-service' flag,
+# but through the separate binary called 'cartridges-search-provider'.
+# So to avoid the unnecessary clutter of making the symlink of 'cartridges-search-provider' from the AppImage to make it work,
+# we just allow it to get called as the first argument inside 'cartridges' AppImage itself, eliminating this issue.
+
+# Check if 'cartridges-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
+if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "cartridges-search-provider" ]; then
+	BIN="$1"
+  shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+fi
