@@ -23,5 +23,9 @@ quick-sharun /usr/bin/cartridges \
              /usr/lib/cartridges-search-provider \
              /usr/lib/libgirepository*
 
+# Patch cartridges python script to use AppImage directories
+sed -i 's|"/usr/share/cartridges"|os.getenv("SHARUN_DIR", "/usr") + "/share/cartridges"|' ./AppDir/bin/cartridges
+sed -i 's|"/usr/share/locale"|os.getenv("SHARUN_DIR", "/usr") + "/share/locale"|' ./AppDir/bin/cartridges
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
