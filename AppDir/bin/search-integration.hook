@@ -67,7 +67,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null && \
   mkdir -p "${LOCAL_SHARE_DIR}"/gnome-shell/search-providers/
   echo '[D-BUS Service]' > "$DBUS_SHARE_LOCAL"
   echo "Name=${DBUS_SERVICE_NAME%.service}" >> "$DBUS_SHARE_LOCAL"
-  echo "Exec=${CURRENTDIR}/lib/cartridges-search-provider" >> "$DBUS_SHARE_LOCAL"
+  echo "Exec=$APPIMAGE cartridges-search-provider" >> "$DBUS_SHARE_LOCAL"
   if [ ! -f "$SEARCH_SHARE_LOCAL" ]; then
     cp "${CURRENTDIR}/share/gnome-shell/search-providers/${SEARCH_PROVIDER_NAME}" "$SEARCH_SHARE_LOCAL"
   fi
