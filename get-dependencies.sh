@@ -6,6 +6,7 @@ ARCH=$(uname -m)
 
 echo "Building package and its dependencies..."
 echo "---------------------------------------------------------------"
+pacman -Syu --noconfirm meson jq
 wget https://codeberg.org/kramo/cartridges/raw/branch/main/meson.build -O /tmp/meson.build
 VER="$(meson introspect /tmp/meson.build --projectinfo | jq -r '.version')"
 sed -i 's|EUID == 0|EUID == 69|g' /usr/bin/makepkg
