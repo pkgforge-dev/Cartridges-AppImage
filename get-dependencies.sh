@@ -13,8 +13,9 @@ sed -i 's|EUID == 0|EUID == 69|g' /usr/bin/makepkg
 git clone https://gitlab.archlinux.org/archlinux/packaging/packages/cartridges.git ./cartridges && (
 	cd ./cartridges
 	sed -i -e "s|pkgver=*|pkgver=$VER|" ./PKGBUILD
-  sed -i -e "s|pkgrel=*|pkgrel=1|" ./PKGBUILD
-  makepkg -fs --noconfirm
+    sed -i -e "s|pkgrel=*|pkgrel=1|" ./PKGBUILD
+	sed -i '/^b2sums/,/^)/d' ./PKGBUILD
+    makepkg -fs --noconfirm
 	ls -la .
 	pacman --noconfirm -U *.pkg.tar.*
 )
