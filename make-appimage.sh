@@ -32,5 +32,8 @@ mkdir -p ./AppDir/share/dbus-1/services/ ./AppDir/share/gnome-shell/search-provi
 cp -v /usr/share/dbus-1/services/page.kramo.Cartridges.SearchProvider.service ./AppDir/share/dbus-1/services/page.kramo.Cartridges.SearchProvider.service
 cp -v /usr/share/gnome-shell/search-providers/page.kramo.Cartridges.SearchProvider.ini ./AppDir/share/gnome-shell/search-providers/page.kramo.Cartridges.SearchProvider.ini
 
+# Set gsettings to save to keyfile
+echo "GSETTINGS_BACKEND=keyfile" >> ./AppDir/.env
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
