@@ -35,8 +35,9 @@ More at: [AnyLinux-AppImages](https://pkgforge-dev.github.io/Anylinux-AppImages/
 
 ---
 
-## Known quirk
+## Known quirks
 
+- Usage of portable folders except cache breaks the searching directories for games, even if you select it in file-picker afterwards.
 - Search-provider integration works only on Gnome (same as upstream) & it depends on:
   - the desktop file being present (which AppImage managers like `soar` & `am` already take care of).  
     Desktop file needs to be named `page.kramo.Cartridges.desktop` for it to work.  
