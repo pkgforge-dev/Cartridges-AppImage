@@ -6,8 +6,8 @@
 # we just allow it to get called as the first argument inside 'cartridges' AppImage itself, eliminating this issue.
 
 # Check if 'cartridges-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
-if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "cartridges-search-provider" ]; then
+if [ -f "$APPDIR"/bin/"$1" ] && [ "$1" = "cartridges-search-provider" ]; then
 	BIN="$1"
     shift
-	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+	exec "$APPDIR"/bin/"$BIN" "$@"
 fi
