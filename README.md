@@ -44,7 +44,6 @@ More at: [AnyLinux-AppImages](https://pkgforge-dev.github.io/Anylinux-AppImages/
     The only exception is the detection for desktop file `cartridges-AM.desktop` in local directories, which is added as a support for `am` AppImage manager.
   - the `XDG_DATA_DIRS` variable having the `XDG_DATA_HOME` in path, which the AppImage will detect if not present + warn about & suggest the solution.
   - This operation won't be performed if search integration files already exist in `/usr/share/` or `/usr/local/share/`, as it's assumed that the packager and/or system-administrator already handled that integration to the system. Modifying `XDG_DATA_DIRS` in that case is not needed.
-  - If you use the AppImage portable folders feature, you only need to use portable `appimage-filename.config` and `appimage-filename.cache` folder to make the search-provider functionality work.
-    - Those are the files that need to be in host's `${XDG_DATA_HOME}` for search-provider functionality to work, which you can delete after the app uninstallation, along with other app dotfiles:
-      - `${XDG_DATA_HOME}/gnome-shell/search-providers/page.kramo.Cartridges.SearchProvider.ini`
-      - `${XDG_DATA_HOME}/dbus-1/services/page.kramo.Cartridges.SearchProvider.service`
+  - If you use the AppImage portable folders feature, those 2 files are made in host's `${HOME}`, which you can delete on app removal:
+    - `${XDG_DATA_HOME}/gnome-shell/search-providers/page.kramo.Cartridges.SearchProvider.ini`
+    - `${XDG_DATA_HOME}/dbus-1/services/page.kramo.Cartridges.SearchProvider.service`
