@@ -1,3 +1,5 @@
+<div align="center">
+
 # Cartridges AppImage 🐧
 
 [![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/Cartridges-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/Cartridges-AppImage/releases/latest)
@@ -8,7 +10,12 @@
   <img src="https://raw.githubusercontent.com/kra-mo/cartridges/refs/heads/main/data/icons/hicolor/scalable/apps/page.kramo.Cartridges.svg" width="128" />
 </p>
 
-* [Upstream URL](https://codeberg.org/kramo/cartridges)
+
+| Latest Stable Release | Upstream URL |
+| :---: | :---: |
+| [Click here](https://github.com/pkgforge-dev/Cartridges-AppImage/releases/latest) | [Click here](https://codeberg.org/kramo/cartridges) |
+
+</div>
 
 ---
 
