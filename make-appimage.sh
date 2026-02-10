@@ -34,3 +34,6 @@ cp -v /usr/share/gnome-shell/search-providers/page.kramo.Cartridges.SearchProvid
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# Test the final app
+quick-sharun --test ./dist/*.AppImage
